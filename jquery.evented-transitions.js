@@ -19,7 +19,7 @@
         }, duration / settings.notifyCount);
       }
       if (duration) {
-        el.one("transitionend", function(event) {
+        el.on("transitionend", function(event) {
           if (settings.notifyCount) {
             clearInterval(intervalId);
           }

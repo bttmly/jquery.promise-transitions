@@ -18,7 +18,7 @@ do ( $ = jQuery ) ->
       , ( duration / settings.notifyCount )
 
     if duration
-      el.one "transitionend", ( event ) ->
+      el.on "transitionend", ( event ) ->
         if settings.notifyCount
           clearInterval( intervalId )
         dfd.resolveWith( el, [ event ] )
@@ -28,6 +28,7 @@ do ( $ = jQuery ) ->
     return dfd.promise()
 
   # each method returns a promise that can be used with .then(), .done(), or .progress()
+  # the context of each promise callback is the event on which the original method is called
   $.fn.extend
     addClassTransitional: ( cl, options ) ->
       options or= {}
