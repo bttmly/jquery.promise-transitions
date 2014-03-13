@@ -6,23 +6,16 @@
       notifyCount: 0
     };
     changeClassTransitional = function(el, cl, kind, options) {
-      var count, dfd, duration, intervalId, settings;
+      var dfd, duration, settings;
       settings = $.extend({}, defaults, options);
       el[kind + "Class"](cl);
       duration = parseInt(1000 * parseFloat(el.css("transition-duration").slice(0, -1), 10), 10);
       dfd = $.Deferred();
-      if (settings.notifyCount) {
-        count = 0;
-        intervalId = setInterval(function() {
-          count += 1;
-          return dfd.notifyWith(el, [count / settings.notifyCount]);
-        }, duration / settings.notifyCount);
-      }
       if (duration) {
         el.on("transitionend", function(event) {
-          if (settings.notifyCount) {
-            clearInterval(intervalId);
-          }
+          var prop;
+          prop = event.originalEvent.propertyName;
+          el.trigger("jqetTransitionEnd." + prop);
           return dfd.resolveWith(el, [event]);
         });
       } else {

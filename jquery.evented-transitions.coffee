@@ -7,20 +7,27 @@ do ( $ = jQuery ) ->
     settings = $.extend {}, defaults, options
 
     el[kind + "Class"]( cl )
+
+
+
     duration = parseInt( 1000 * parseFloat( el.css( "transition-duration" ).slice( 0, -1 ), 10 ), 10 )
     dfd = $.Deferred()
 
-    if settings.notifyCount
-      count = 0
-      intervalId = setInterval ->
-        count += 1
-        dfd.notifyWith( el, [ ( count / settings.notifyCount ) ] )
-      , ( duration / settings.notifyCount )
+    # if settings.notifyCount
+    #   count = 0
+    #   intervalId = setInterval ->
+    #     count += 1
+    #     dfd.notifyWith( el, [ ( count / settings.notifyCount ) ] )
+    #   , ( duration / settings.notifyCount )
 
     if duration
       el.on "transitionend", ( event ) ->
-        if settings.notifyCount
-          clearInterval( intervalId )
+        # if settings.notifyCount
+        #   clearInterval( intervalId )
+
+        prop = event.originalEvent.propertyName
+
+        el.trigger( "jqetTransitionEnd.#{ prop }")
         dfd.resolveWith( el, [ event ] )
     else
       dfd.resolveWith( el, [ false ] )

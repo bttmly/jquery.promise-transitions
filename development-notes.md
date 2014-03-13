@@ -19,3 +19,4 @@ Assuming there is no way to know which property a transition is acting on prior 
 
 *We can't:*
 - Use the `.notify()`--`.progress()` system to alert at intervals, because if there are different transition durations for different properties, we can't be sure which one we want to observe. Maybe always use the longest duration?
+- Know how many properties are transitioning, at least without doing some extensive CSS parsing. This is a problem, since if we're using `Deferred.promise()` we can only resolve each promise once. Perhaps we could `.notify()` on each `transitionend` and never actually resolve the promise?

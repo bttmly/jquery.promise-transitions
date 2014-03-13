@@ -72,27 +72,30 @@
 
   $( ".js-blue" ).click( function( clickEvent ) {
     $box.removeClass( "red" ).addClassTransitional( "blue" ).then( function( transitionEvent ) {
-      //console.log( this );
+      console.log( this );
       console.log( transitionEvent );
     });
   });
 
   $( ".js-large" ).click( function( clickEvent ) {
     $box.removeClass( "small" ).addClassTransitional( "large" ).then( function( transitionEvent ) {
-      // console.log( this );
+      console.log( this );
       console.log( transitionEvent );
     });
   });
 
   $( ".js-small" ).click( function( clickEvent ) {
-    var promise = $box.removeClass( "large" ).addClassTransitional( "small", opts ).done( function( transitionEvent ) {
-      // console.log( this );
-      // console.log( transitionEvent );
+    var promise = $box.removeClass( "large" ).addClassTransitional( "small", opts )
+
+    promise.done( function( transitionEvent ) {
+      console.log( "-- promise callback --" );
+      console.log( this );
+      console.log( transitionEvent );
+      console.log( "-- promise callback --" );
     });
 
     promise.progress( function( pct ) {
-      // console.log( this );
-      console.log( pct || false );
+      console.log( "-- progress callback --" );
     });
     
   });
@@ -101,10 +104,13 @@
     $box.removeClass( "red blue small large" );
   });
 
-  $( ".box" ).one( "transitionend", function( event ) {
+
+
+
+  $( ".box" ).on( "jqetTransitionEnd", function( event ) {
+    console.log( "-- event handler --" )
     console.log( event )
-    // eventCounter += 1;
-    // console.log( "transitionend from index: " + eventCounter )
+    console.log( "-- event handler --" )
   });
   
 
