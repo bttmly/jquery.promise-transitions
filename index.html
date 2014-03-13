@@ -1,0 +1,115 @@
+<html>
+<head>
+  <title></title>
+<style>
+
+  .box {
+    width: 4rem;
+    height: 4rem;
+    border: 2px solid #333;
+    transition: background-color 1.5s ease-in-out, width 2s ease-in-out, height 2.5s ease-in-out;
+    position: absolute;
+    top: 6rem;
+    left: 40vw;
+  }
+
+  .red {
+    background: red;
+  }
+
+  .blue {
+    background: blue;
+  }
+
+  .large {
+    width: 8rem;
+    height: 8rem;
+  }
+
+  .small {
+    width: 2rem;
+    height: 2rem;
+  }
+
+</style>
+
+</head>
+<body>
+
+<div class="box">
+</div>
+
+<div class="buttons">
+  <button class="js-red">Turn Red</button>
+  <button class="js-blue">Turn blue</button>
+
+  <button class="js-large">Make Large</button>
+  <button class="js-small">Make Small</button>
+
+  <button class="js-reset">Reset</button>
+
+</div>
+
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="./jquery.evented-transitions.js"></script>
+<script>
+  
+  var eventCounter = 0;
+
+  var opts = {
+    notifyCount: 9
+  };
+
+  var $box = $( ".box" );
+
+  $( ".js-red" ).click( function( clickEvent ) {
+    $box.removeClass( "blue" ).addClassTransitional( "red" ).then( function( transitionEvent ) {
+      // console.log( this );
+      console.log( event );
+    });
+  });
+
+  $( ".js-blue" ).click( function( clickEvent ) {
+    $box.removeClass( "red" ).addClassTransitional( "blue" ).then( function( transitionEvent ) {
+      //console.log( this );
+      console.log( transitionEvent );
+    });
+  });
+
+  $( ".js-large" ).click( function( clickEvent ) {
+    $box.removeClass( "small" ).addClassTransitional( "large" ).then( function( transitionEvent ) {
+      // console.log( this );
+      console.log( transitionEvent );
+    });
+  });
+
+  $( ".js-small" ).click( function( clickEvent ) {
+    var promise = $box.removeClass( "large" ).addClassTransitional( "small", opts ).done( function( transitionEvent ) {
+      // console.log( this );
+      // console.log( transitionEvent );
+    });
+
+    promise.progress( function( pct ) {
+      // console.log( this );
+      console.log( pct || false );
+    });
+    
+  });
+
+  $( ".js-reset" ).click( function( event ) {
+    $box.removeClass( "red blue small large" );
+  });
+
+  $( ".box" ).one( "transitionend", function( event ) {
+    console.log( event )
+    // eventCounter += 1;
+    // console.log( "transitionend from index: " + eventCounter )
+  });
+  
+
+
+</script>
+
+</body>
+</html>
