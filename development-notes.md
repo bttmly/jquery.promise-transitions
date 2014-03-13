@@ -1,4 +1,4 @@
-# jQuery Evented Transitions: Notes
+# jQuery Promise Transitions: Notes
 
 - `$(x).css("transition-duration")` returns a **string** in the form:
 `1.5s, 2s, 2.5s`
