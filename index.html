@@ -54,7 +54,8 @@
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <script src="./jquery.evented-transitions.js"></script>
 <script>
-  
+$(function(){
+
   var eventCounter = 0;
 
   var opts = {
@@ -94,7 +95,9 @@
       console.log( "-- promise callback --" );
     });
 
-    promise.progress( function( pct ) {
+    promise.progress( function( elapsed, percent ) {
+      console.log( "-- progress callback --" );
+      console.log( [ elapsed, percent ] );
       console.log( "-- progress callback --" );
     });
     
@@ -104,15 +107,19 @@
     $box.removeClass( "red blue small large" );
   });
 
-
-
-
   $( ".box" ).on( "jqetTransitionEnd", function( event ) {
-    console.log( "-- event handler --" )
-    console.log( event )
-    console.log( "-- event handler --" )
+    console.log( "-- event handler --" );
+    console.log( event );
+    console.log( "-- event handler --" );
   });
+
+  $( ".js-small" ).click();
+
+});
   
+  
+
+
 
 
 </script>

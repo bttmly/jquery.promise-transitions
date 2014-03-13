@@ -6,23 +6,40 @@
       notifyCount: 0
     };
     changeClassTransitional = function(el, cl, kind, options) {
-      var dfd, duration, settings;
+      var count, dfd, duration, interval, intervalId, settings;
       settings = $.extend({}, defaults, options);
       el[kind + "Class"](cl);
-      duration = parseInt(1000 * parseFloat(el.css("transition-duration").slice(0, -1), 10), 10);
       dfd = $.Deferred();
-      if (duration) {
-        el.on("transitionend", function(event) {
-          var prop;
-          prop = event.originalEvent.propertyName;
-          el.trigger("jqetTransitionEnd." + prop);
-          return dfd.resolveWith(el, [event]);
-        });
-      } else {
+      duration = el.css("transition-duration").split(", ");
+      if (duration.length > 1 || !duration[0]) {
         dfd.resolveWith(el, [false]);
+        return dfd.promise();
       }
-      return dfd.promise();
+      duration = parseInt(1000 * parseFloat(duration[0].slice(0, -1), 10), 10);
+      if (settings.notifyCount) {
+        count = 0;
+        interval = duration / settings.notifyCount;
+        intervalId = setInterval(function() {
+          var elapsed, percent;
+          count += 1;
+          percent = count / settings.notifyCount;
+          elapsed = count * interval;
+          return dfd.notifyWith(el, [elapsed, percent]);
+        }, interval);
+      }
+      return el.on("transitionend", function(teEvent) {
+        var e, prop;
+        prop = teEvent.originalEvent.propertyName;
+        e = $.Event("jqetTransitionEnd", {
+          propertyName: prop,
+          originalEvent: teEvent.originalEvent
+        });
+        el.trigger(e);
+        dfd.resolveWith(el, [e]);
+        return el.off("transitionend");
+      });
     };
+    return dfd.promise();
     return $.fn.extend({
       addClassTransitional: function(cl, options) {
         options || (options = {});
